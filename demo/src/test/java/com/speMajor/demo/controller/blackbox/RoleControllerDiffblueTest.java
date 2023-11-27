@@ -29,10 +29,10 @@ class RoleControllerDiffblueTest {
     private RoleService roleService;
 
     /**
-     * Method under test: {@link RoleController#addDepartment(Role)}
+     * Method under test: {@link RoleController#addRole(Role)}
      */
     @Test
-    void testAddDepartment() throws Exception {
+    void testAddRole() throws Exception {
         Role role = new Role();
         role.setId(1);
         role.setName("Name");

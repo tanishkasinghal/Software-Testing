@@ -64,9 +64,6 @@
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>2.0.0</version>
 		</dependency>
-
-
-
 		<!--		<dependency>-->
 <!--			<groupId>org.springframework.security</groupId>-->
 <!--			<artifactId>spring-security-test</artifactId>-->
@@ -121,9 +118,11 @@
 				<configuration>
 					<targetClasses>
 						<param>com.speMajor.demo.controller*</param>
-						<param>com.speMajor.demo.service.BlackBox.RoleServiceImpl</param>
-						<param>com.speMajor.demo.service.Department.DepartmentServiceImpl</param>
-						<param>com.speMajor.demo.service.Employee.EmployeeServiceImpl</param>
+						<param>com.speMajor.demo.service*</param>
+<!--						<param>com.speMajor.demo.service.BlackBox.RoleServiceImpl</param>-->
+<!--						<param>com.speMajor.demo.service.Department.DepartmentServiceImpl</param>-->
+<!--						<param>com.speMajor.demo.service.Employee.EmployeeServiceImpl</param>-->
+<!--						<param>com.speMajor.demo.service.SalaryCalculator</param>-->
 					</targetClasses>
 					<targetTests>
 						<param>com.speMajor.demo.controller*</param>

@@ -36,7 +36,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 @ContextConfiguration(classes = {AuthController.class})
 @ExtendWith(SpringExtension.class)
-class AuthControllerDiffblueTest {
+class AuthControllerTest {
     @Autowired
     private AuthController authController;
 
@@ -53,7 +53,7 @@ class AuthControllerDiffblueTest {
     private UserDetailsService userDetailsService;
 
     /**
-     * Method under test:  {@link AuthController#createToken(JwtAuthRequest)}
+     * Method under test: {@link AuthController#createToken(JwtAuthRequest)}
      */
     @Test
     void testCreateToken() throws Exception {
@@ -77,5 +77,37 @@ class AuthControllerDiffblueTest {
                 .andExpect(MockMvcResultMatchers.content().string("{\"token\":\"ABC123\"}"));
     }
 
+    /**
+     * Method under test: {@link AuthController#registerUser(EmployeeDTO, Long)}
+     */
+    @Test
+    void testRegisterUser() throws Exception {
+        when(employeeService.registerNewUser(Mockito.<EmployeeDTO>any(), Mockito.<Long>any()))
+                .thenReturn(new EmployeeDTO());
 
+        EmployeeDTO employeeDTO = new EmployeeDTO();
+        employeeDTO.setDepartment(new DepartmentDTO(1L, "Dept Name"));
+        employeeDTO.setEmailId("42");
+        employeeDTO.setFirstName("Jane");
+        employeeDTO.setId(1L);
+        employeeDTO.setJoiningDate(Date.from(LocalDate.of(1970, 1, 1).atStartOfDay().atZone(ZoneOffset.UTC).toInstant()));
+        employeeDTO.setLastName("Doe");
+        employeeDTO.setLevel(1L);
+        employeeDTO.setPassword("iloveyou");
+        employeeDTO.setRoles(new HashSet<>());
+        String content = (new ObjectMapper()).writeValueAsString(employeeDTO);
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post("/api/auth/register/{deptId}", 1L)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(content);
+        ResultActions actualPerformResult = MockMvcBuilders.standaloneSetup(authController)
+                .build()
+                .perform(requestBuilder);
+        actualPerformResult.andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
+                .andExpect(MockMvcResultMatchers.content()
+                        .string(
+                                "{\"id\":0,\"firstName\":null,\"lastName\":null,\"emailId\":null,\"level\":0,\"password\":null,\"department\":null,"
+                                        + "\"joiningDate\":null,\"roles\":[]}"));
+    }
 }
+

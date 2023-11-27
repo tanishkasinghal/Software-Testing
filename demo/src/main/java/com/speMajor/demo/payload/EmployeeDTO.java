@@ -25,6 +25,7 @@ public class EmployeeDTO {
     private String lastName;
     @Email(message = "Email Address is not valid")
     private String emailId;
+    private long level;
     @NotEmpty
     private String password;
     private DepartmentDTO department;

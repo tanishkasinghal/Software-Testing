@@ -27,8 +27,12 @@ public class Employee  implements UserDetails{
     @Column(name = "last_name")
     private String lastName;
 
+
     @Column(name = "email_id",nullable = false)
     private String emailId;
+
+    @Column(name = "level",nullable = false)
+    private long level;
 
     @Column(name = "joining_date")
     private Date joiningDate;

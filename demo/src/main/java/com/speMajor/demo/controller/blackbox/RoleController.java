@@ -17,7 +17,7 @@ public class RoleController {
     private RoleService roleService;
 
     @PostMapping("/")
-    public ResponseEntity<Role> addDepartment(@Valid @RequestBody Role role){
+    public ResponseEntity<Role> addRole(@Valid @RequestBody Role role){
         Role newRole=this.roleService.addRole(role);
         return new ResponseEntity<>(newRole, HttpStatus.CREATED);
     } //working

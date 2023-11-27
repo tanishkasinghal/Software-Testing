@@ -10,7 +10,6 @@ import com.speMajor.demo.payload.EmployeeResponse;
 import com.speMajor.demo.repository.DepartmentRepository;
 import com.speMajor.demo.repository.EmployeeRepository;
 import com.speMajor.demo.repository.RoleRepository;
-import com.speMajor.demo.service.Employee.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+
     @Autowired
     private ModelMapper modelMapper;
 
