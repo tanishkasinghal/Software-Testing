@@ -1,4 +1,4 @@
-package com.speMajor.demo.service;
+package com.speMajor.demo.service.Other;
 
 
 import com.speMajor.demo.exception.ResourceNotFoundException;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SalaryCalculator {
+public class SalaryService {
 
     @Autowired
     EmployeeRepository employeeRepository;
@@ -28,9 +28,7 @@ public class SalaryCalculator {
 
         return baseSalary + bonus;
     }
-    public double findBaseSalary(long level)
-    {
-
+    public double findBaseSalary(long level) {
         if (level >= 0 && level < 5) {
             return 50000; // Base salary for levels 1-4
         } else if (level >= 5 && level < 10) {
@@ -42,35 +40,38 @@ public class SalaryCalculator {
         } else {
             throw new IllegalArgumentException("Invalid designation level");
         }
-
     }
+
+
 
     public double calculate(Long id){
         Employee employee=this.employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user","email: "+id, 0L));
 
         String department=employee.getDepartment().getDeptName();
 
-        SalaryCalculator salaryCalculator=new SalaryCalculator();
+        SalaryService salaryCalculator=new SalaryService();
         double res=salaryCalculator.calculateSalary(employee,department);
         return res;
     }
 
     public double calculateTax(Long id) {
-        Employee employee=this.employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("user","email: "+id, 0L));
+        Employee employee = this.employeeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("user", "email: " + id, 0L));
         double baseSalary = findBaseSalary(employee.getLevel());
         double tax;
 
-        if (baseSalary <= 50000) {
-            // 10% tax for salary up to $50,000
+        if (baseSalary >= 50000 && baseSalary < 100000) {
+            // 10% tax for salary between $50,000 and $99,999
             tax = 0.1 * baseSalary;
-        } else if (baseSalary <= 100000) {
-            // 15% tax for salary between $50,001 and $100,000
+        } else if (baseSalary >= 100000) {
+            // 15% tax for salary of $100,000 and above
             tax = 0.15 * baseSalary;
         } else {
-            // 20% tax for salary above $100,000
-            tax = 0.2 * baseSalary;
+            // 0% tax for salary below $50,000
+            tax = 0.0;
         }
 
         return tax;
     }
 }
+

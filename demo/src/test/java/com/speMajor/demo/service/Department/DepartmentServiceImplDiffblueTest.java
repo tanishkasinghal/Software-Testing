@@ -1,16 +1,9 @@
 package com.speMajor.demo.service.Department;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.anyLong;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -21,6 +14,7 @@ import com.speMajor.demo.payload.DepartmentDTO;
 import com.speMajor.demo.repository.DepartmentRepository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -136,39 +130,49 @@ class DepartmentServiceImplDiffblueTest {
         verify(departmentRepository).save(Mockito.<Department>any());
     }
 
-//    /**
-//     * Method under test:
-//     * {@link DepartmentServiceImpl#updateDepartmentDetails(DepartmentDTO, Long)}
-//     */
-//    @Test
-//    void testUpdateDepartmentDetails3() {
-//        Optional<Department> emptyResult = Optional.empty();
-//        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-//        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<Object>>any())).thenReturn("Map");
-//        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any()))
-//                .thenReturn(new DepartmentDTO(1L, "Dept Name"));
-//        assertThrows(ResourceNotFoundException.class,
-//                () -> departmentServiceImpl.updateDepartmentDetails(new DepartmentDTO(1L, "Dept Name"), 1L));
-//        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<Object>>any());
-//        verify(departmentRepository).findById(Mockito.<Long>any());
-//    }
-//
-//    @Test
-//    void testUpdateDepartmentDetails3() {
-//        Optional<Department> emptyResult = Optional.empty();
-//        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-//
-//        // Ensure modelMapper consistently returns a DepartmentDTO object
-//        when(modelMapper.map(any(), any())).thenReturn(new DepartmentDTO(1L, "Dept Name"));
-//
-//        assertThrows(ResourceNotFoundException.class,
-//                () -> departmentServiceImpl.updateDepartmentDetails(new DepartmentDTO(1L, "Dept Name"), 1L));
-//
-//        verify(modelMapper).map(any(), any());
-//        verify(departmentRepository).findById(Mockito.<Long>any());
-//    }
-//
+    /**
+     * Method under test:
+     * {@link DepartmentServiceImpl#updateDepartmentDetails(DepartmentDTO, Long)}
+     */
+    @Test
+    void testUpdateDepartmentDetails3() {
+        Department department = new Department();
+        department.setDeptName("Dept Name");
+        department.setEmployeeList(new ArrayList<>());
+        department.setId(1L);
+        Optional<Department> ofResult = Optional.of(department);
 
+        Department department2 = new Department();
+        department2.setDeptName("Dept Name");
+        department2.setEmployeeList(new ArrayList<>());
+        department2.setId(1L);
+        when(departmentRepository.save(Mockito.<Department>any())).thenReturn(department2);
+        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(ofResult);
+        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any()))
+                .thenThrow(new ResourceNotFoundException("An error occurred"));
+        assertThrows(ResourceNotFoundException.class,
+                () -> departmentServiceImpl.updateDepartmentDetails(new DepartmentDTO(1L, "Dept Name"), 1L));
+        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any());
+        verify(departmentRepository).findById(Mockito.<Long>any());
+        verify(departmentRepository).save(Mockito.<Department>any());
+    }
+
+    /**
+     * Method under test:
+     * {@link DepartmentServiceImpl#updateDepartmentDetails(DepartmentDTO, Long)}
+     */
+    @Test
+    void testUpdateDepartmentDetails4() {
+        Optional<Department> emptyResult = Optional.empty();
+        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
+        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<Object>>any())).thenReturn("Map");
+        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any()))
+                .thenReturn(new DepartmentDTO(1L, "Dept Name"));
+        assertThrows(ResourceNotFoundException.class,
+                () -> departmentServiceImpl.updateDepartmentDetails(new DepartmentDTO(1L, "Dept Name"), 1L));
+        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<Object>>any());
+        verify(departmentRepository).findById(Mockito.<Long>any());
+    }
 
     /**
      * Method under test: {@link DepartmentServiceImpl#getDepartmentById(Long)}
@@ -207,21 +211,6 @@ class DepartmentServiceImplDiffblueTest {
         verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any());
         verify(departmentRepository).findById(Mockito.<Long>any());
     }
-
-//    /**
-//     * Method under test: {@link DepartmentServiceImpl#getDepartmentById(Long)}
-//     */
-//    @Test
-//    void testGetDepartmentById3() {
-//        Optional<Department> emptyResult = Optional.empty();
-//        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-//        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<Object>>any())).thenReturn("Map");
-//        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any()))
-//                .thenReturn(new DepartmentDTO(1L, "Dept Name"));
-//        assertThrows(ResourceNotFoundException.class, () -> departmentServiceImpl.getDepartmentById(1L));
-//        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<Object>>any());
-//        verify(departmentRepository).findById(Mockito.<Long>any());
-//    }
 
     /**
      * Method under test:  {@link DepartmentServiceImpl#getAllDepartments()}
@@ -300,6 +289,23 @@ class DepartmentServiceImplDiffblueTest {
         assertThrows(ResourceNotFoundException.class, () -> departmentServiceImpl.getAllDepartments());
         verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any());
         verify(departmentRepository).findAll();
+    }
+
+    @Test
+    public void testGetDepartmentByIdWithInvalidId() {
+        // Arrange
+        Long invalidDepartmentId = 123L; // Assuming this departmentId is invalid
+
+        // Mock the behavior of departmentRepository.findById to return null
+        when(departmentRepository.findById(invalidDepartmentId)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            departmentServiceImpl.getDepartmentById(invalidDepartmentId);
+        });
+
+        // Verify that departmentRepository.findById is called with the correct argument
+        verify(departmentRepository, times(1)).findById(invalidDepartmentId);
     }
 
     /**

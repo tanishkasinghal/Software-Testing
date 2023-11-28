@@ -1,13 +1,16 @@
 package com.speMajor.demo.controller;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.speMajor.demo.exception.ResourceNotFoundException;
 import com.speMajor.demo.payload.DepartmentDTO;
+import com.speMajor.demo.repository.DepartmentRepository;
 import com.speMajor.demo.service.Department.DepartmentService;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,6 +35,9 @@ class DepartmentControllerDiffblueTest {
     @MockBean
     private DepartmentService departmentService;
 
+    @MockBean
+    private DepartmentRepository departmentRepository;
+
     /**
      * Method under test:  {@link DepartmentController#addDepartment(DepartmentDTO)}
      */
@@ -52,6 +58,26 @@ class DepartmentControllerDiffblueTest {
         actualPerformResult.andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.content().contentType("application/json"))
                 .andExpect(MockMvcResultMatchers.content().string("{\"id\":1,\"deptName\":\"Dept Name\"}"));
+    }
+
+
+    @Test
+    public void testUpdateDepartmentDetails_ResourceNotFound() {
+        // Arrange
+        Long departmentId = 1L;
+
+        // Mock the behavior of departmentRepository.findById to return an empty Optional
+        when(departmentRepository.findById(departmentId)).thenReturn(Optional.empty());
+
+        // Act and Assert
+        assertThrows(ResourceNotFoundException.class, () -> {
+            DepartmentDTO departmentDTO = new DepartmentDTO();
+            departmentDTO.setDeptName("Updated Department");
+            departmentService.updateDepartmentDetails(departmentDTO, departmentId);
+        });
+
+        // Verify that findById method is called
+        verify(departmentRepository, times(1)).findById(departmentId);
     }
 
     /**

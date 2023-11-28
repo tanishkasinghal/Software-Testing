@@ -7,6 +7,8 @@ import com.speMajor.demo.repository.EmployeeRepository;
 import com.speMajor.demo.security.JwtTokenHelper;
 import com.speMajor.demo.service.Employee.EmployeeService;
 import jakarta.validation.constraints.NotNull;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class AuthController {
 
     @Autowired
     private EmployeeService employeeService;
-
+    private static final Logger logger = LogManager.getLogger(LeaveApplicationController.class);
     public AuthController(JwtTokenHelper jwtTokenHelper, UserDetailsService userDetailsService, AuthenticationManager authenticationManager) {
         this.jwtTokenHelper = jwtTokenHelper;
         this.userDetailsService = userDetailsService;
@@ -36,12 +38,12 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> createToken(@NotNull @RequestBody JwtAuthRequest request) throws Exception {
-        System.out.println("Inside the controller");
+        logger.info("Inside the controller");
         this.authenticate(request.getUsername(),request.getPassword());
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getUsername());
-        System.out.println("Spring user details "+userDetails);
+        logger.info("Spring user details "+userDetails);
         String token = this.jwtTokenHelper.generateToken(userDetails);
-        System.out.println("Token"+token);
+        logger.info("Token"+token);
         JwtAuthResponse response = new JwtAuthResponse();
         response.setToken(token);
        // response.setUser(this.mapper.map((User) userDetails, UserDto.class));
@@ -53,7 +55,7 @@ public class AuthController {
         try{
             this.authenticationManager.authenticate(authenticationToken);
         }catch (BadCredentialsException e){
-            System.out.println("Invalid Credentials !!");
+            logger.info("Invalid Credentials !!");
             throw new ApiException("Invalid Username or Password !!");
         }
 

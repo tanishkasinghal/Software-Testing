@@ -66,9 +66,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDTO updateEmployeeDetails(EmployeeDTO EmployeeDTO, Long id) {
         Employee employee=this.employeeRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("employee","id",id));
-        employee.setFirstName(EmployeeDTO.getFirstName());
-        employee.setLastName(EmployeeDTO.getLastName());
-        employee.setEmailId(EmployeeDTO.getEmailId());
+//        employee.setFirstName(EmployeeDTO.getFirstName());
+//        employee.setLastName(EmployeeDTO.getLastName());
+//        employee.setEmailId(EmployeeDTO.getEmailId());
         employee.setPassword(EmployeeDTO.getPassword());
         Employee updatedEmployee=this.employeeRepository.save(employee);
         return this.modelMapper.map(updatedEmployee,EmployeeDTO.class);

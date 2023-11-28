@@ -57,7 +57,12 @@ public class EmployeeController {
    @GetMapping("/{id}")
    public ResponseEntity<EmployeeDTO> getEmployeebyId(@PathVariable Long id){
         EmployeeDTO employeeDTO=this.employeeService.getEmployeeById(id);
-        return new ResponseEntity<EmployeeDTO>(employeeDTO,HttpStatus.OK);
+       if (employeeDTO != null) {
+           return new ResponseEntity<>(employeeDTO, HttpStatus.OK);
+       } else {
+           // Handle the case where the employeeDTO is null, perhaps by returning a different HttpStatus
+           return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+       }
    }
 
    @GetMapping("/search/{keyword}")
