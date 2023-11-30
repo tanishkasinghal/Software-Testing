@@ -46,6 +46,7 @@ public class  SecurityConfig {
                 .requestMatchers("/api/calculator/**").permitAll()
                 .requestMatchers("/api/department/**").permitAll()
                 .requestMatchers("/api/employee/**").permitAll()
+                .requestMatchers("/api/leave/**").permitAll()
                 .requestMatchers("/v2/api-docs").permitAll()
                 .requestMatchers(HttpMethod.GET).permitAll()
                 .anyRequest()

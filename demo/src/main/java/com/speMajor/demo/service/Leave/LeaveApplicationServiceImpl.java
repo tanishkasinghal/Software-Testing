@@ -31,15 +31,8 @@ public class LeaveApplicationServiceImpl implements LeaveApplicationService {
     @Override
     public LeaveApplication submitResponse(LeaveApplication leaveApplication) {
         LeaveApplication leaveApplication1=this.leaveApplicationRepository.findById(leaveApplication.getApplicationId()).orElseThrow(()-> new ResourceNotFoundException("App;ication with given id not found"+leaveApplication.getApplicationId()));
-//        leaveApplication1.setLeaveType(leaveApplication.getLeaveType());
-//        leaveApplication1.setMessage(leaveApplication.getMessage());
 //        leaveApplication1.setRemarks(leaveApplication.getRemarks());
         leaveApplication1.setDateOfApproval(new Date());
-//        leaveApplication1.setLeaveStatus(leaveApplication.getLeaveStatus());
-//        leaveApplication1.setLeaveFrom(leaveApplication.getLeaveFrom());
-//        leaveApplication1.setLeaveTill(leaveApplication.getLeaveTill());
-//        leaveApplication1.setApplicationDate(leaveApplication.getApplicationDate());
-//        leaveApplication1.setEmployeeId(leaveApplication.getEmployeeId());
         return this.leaveApplicationRepository.save(leaveApplication1);
     }
     @Override

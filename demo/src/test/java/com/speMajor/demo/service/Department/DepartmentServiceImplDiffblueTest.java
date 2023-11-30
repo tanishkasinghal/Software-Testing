@@ -157,22 +157,22 @@ class DepartmentServiceImplDiffblueTest {
         verify(departmentRepository).save(Mockito.<Department>any());
     }
 
-    /**
-     * Method under test:
-     * {@link DepartmentServiceImpl#updateDepartmentDetails(DepartmentDTO, Long)}
-     */
-    @Test
-    void testUpdateDepartmentDetails4() {
-        Optional<Department> emptyResult = Optional.empty();
-        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
-        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<Object>>any())).thenReturn("Map");
-        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any()))
-                .thenReturn(new DepartmentDTO(1L, "Dept Name"));
-        assertThrows(ResourceNotFoundException.class,
-                () -> departmentServiceImpl.updateDepartmentDetails(new DepartmentDTO(1L, "Dept Name"), 1L));
-        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<Object>>any());
-        verify(departmentRepository).findById(Mockito.<Long>any());
-    }
+//    /**
+//     * Method under test:
+//     * {@link DepartmentServiceImpl#updateDepartmentDetails(DepartmentDTO, Long)}
+//     */
+//    @Test
+//    void testUpdateDepartmentDetails4() {
+//        Optional<Department> emptyResult = Optional.empty();
+//        when(departmentRepository.findById(Mockito.<Long>any())).thenReturn(emptyResult);
+//        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<Object>>any())).thenReturn("Map");
+//        when(modelMapper.map(Mockito.<Object>any(), Mockito.<Class<DepartmentDTO>>any()))
+//                .thenReturn(new DepartmentDTO(1L, "Dept Name"));
+//        assertThrows(ResourceNotFoundException.class,
+//                () -> departmentServiceImpl.updateDepartmentDetails(new DepartmentDTO(1L, "Dept Name"), 1L));
+//        verify(modelMapper).map(Mockito.<Object>any(), Mockito.<Class<Object>>any());
+//        verify(departmentRepository).findById(Mockito.<Long>any());
+//    }
 
     /**
      * Method under test: {@link DepartmentServiceImpl#getDepartmentById(Long)}

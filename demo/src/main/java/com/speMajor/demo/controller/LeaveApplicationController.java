@@ -15,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/leave")
+@RequestMapping("/api/leave")
 public class LeaveApplicationController {
     @Autowired
     private LeaveApplicationService leaveApplicationService;
